@@ -80,7 +80,6 @@ class TestFile(unittest.TestCase):
                                        1: {"name": "Sheet2", "spreadsheet": spreadsheet}
                                        }
         self.file_xlsx.data = (pd.DataFrame(test_data),)
-
         self.invalid_file_xlsx = File()
         self.invalid_file_xlsx.spreadsheets = self.file_xlsx.spreadsheets
         self.invalid_file_xlsx.data = [pd.DataFrame(test_data)]
@@ -95,3 +94,23 @@ class TestFile(unittest.TestCase):
         :return:
         """
         self.assertRaises(AssertionError, self.invalid_file_xlsx.is_valid)
+
+    def test_invalidity_df(self):
+        """
+        test invalid definition of data, when a tuple without dataframes is passed
+
+        :return:
+        """
+        self.invalid_file_xlsx.data = (1, 2,)
+        self.assertRaises(AssertionError, self.invalid_file_xlsx.is_valid)
+
+    def test_invalidity_df_dtype(self):
+        """
+        test invalid definition of data, when a tuple with dataframe that has not only 'object' as datatype
+
+        :return:
+        """
+        df = self.file_xlsx.data[0]
+        df[0] = df[0].astype("category")
+        self.file_xlsx.data = (df,)
+        self.assertRaises(AssertionError, self.file_xlsx.is_valid)

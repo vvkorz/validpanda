@@ -7,8 +7,10 @@ that in their turn have headers and content under header. We can than construct 
 
 ## Usage
 
+The project is work in progress, so please clone this repository, cd to the root directory and install with 
+
 ```
-pip install validpanda
+pip install .
 ```
 
 For more detailed documentation, please see [here](https://validpanda.readthedocs.io/en/latest/)

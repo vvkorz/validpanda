@@ -87,11 +87,19 @@ class File:
         """
         core method to validate whether a given file matches this class definition.
 
+
         :return: Boolean
         """
-        assert(isinstance(self.data, tuple)), "File class only accepts tuples of dataframes, not {}".format(type(self.data))
+        assert(isinstance(self.data, tuple)), \
+            "File class only accepts tuples of dataframes, not {}".format(type(self.data))
         for indx, dataframe in enumerate(self.data):
-            assert(isinstance(dataframe, pd.DataFrame)), "{} entry in data tuple is not a dataframe, but {}".format(indx, type(dataframe))
+            assert(isinstance(dataframe, pd.DataFrame)), \
+                "{} entry in data tuple is not a dataframe, but {}".format(indx, type(dataframe))
+
+            for col_indx, col_dtype in enumerate(dataframe.dtypes):
+                assert(pd.api.types.is_object_dtype(col_dtype)), \
+                    "validpanda only accepts 'object' datatypes on columns, not {} in col number {}".format(col_dtype,
+                                                                                                            col_indx)
             if not self.spreadsheets[indx]["spreadsheet"].is_valid(dataframe):
                 return False
         return True
